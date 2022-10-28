@@ -18,6 +18,28 @@ class ViewController: UIViewController {
         _ = setupCommentView()
         setupMenuButtons()
     }
+    
+    private func setupView() {
+        view.backgroundColor = .systemGray6
+        setupIncrementButton()
+        setupValueLabel()
+    }
+    private func setupCommentView()-> UIView{
+        let CommentView = UIView()
+        CommentView.backgroundColor = .white
+        CommentView.layer.cornerRadius = 12
+        view.addSubview(CommentView)
+        CommentView.pinTop(to: self.view.safeAreaLayoutGuide.topAnchor)
+        CommentView.pin(to: self.view, [.left,.right], [24, 24])
+        commentLabel.font = .systemFont(ofSize: 14.0, weight: .regular)
+        commentLabel.textColor = .systemGray
+        commentLabel.numberOfLines = 0
+        commentLabel.textAlignment = .center
+        CommentView.addSubview(commentLabel)
+        commentLabel.pin(to: CommentView, [.top, .left, .bottom, .right], [16,16,16,16])
+        return CommentView
+    }
+    // MARK: -FuncButton
     private func setupIncrementButton(){
         incrementButton.setTitle("Increment", for: .normal)
         incrementButton.setTitleColor(.black, for: .normal)
@@ -40,7 +62,7 @@ class ViewController: UIViewController {
                           options: .transitionCrossDissolve,
                           animations:{self.updateUI()}, completion: nil)
     }
-    
+    // MARK: -Func
     private func setupValueLabel(){
         valueLabel.font = .systemFont(ofSize: 40.0, weight: .bold)
         valueLabel.textColor = .black
@@ -49,26 +71,8 @@ class ViewController: UIViewController {
         valueLabel.pinButton(to: incrementButton.topAnchor, 16)
         valueLabel.pinCenterX(to: self.view)
     }
-    private func setupView() {
-        view.backgroundColor = .systemGray6
-        setupIncrementButton()
-        setupValueLabel()
-    }
-    private func setupCommentView()-> UIView{
-        let CommentView = UIView()
-        CommentView.backgroundColor = .white
-        CommentView.layer.cornerRadius = 12
-        view.addSubview(CommentView)
-        CommentView.pinTop(to: self.view.safeAreaLayoutGuide.topAnchor)
-        CommentView.pin(to: self.view, [.left,.right], [24, 24])
-        commentLabel.font = .systemFont(ofSize: 14.0, weight: .regular)
-        commentLabel.textColor = .systemGray
-        commentLabel.numberOfLines = 0
-        commentLabel.textAlignment = .center
-        CommentView.addSubview(commentLabel)
-        commentLabel.pin(to: CommentView, [.top, .left, .bottom, .right], [16,16,16,16])
-        return CommentView
-    }
+
+
     func updateCommentLabel(value: Int){
         switch value{
         case 0...10:
@@ -99,6 +103,8 @@ class ViewController: UIViewController {
         valueLabel.text = "\(value)"
         updateCommentLabel(value: value)
     }
+    
+    // MARK: -funcMenuButton
     private func makeMenuButton(title: String)-> UIButton{
         let button = UIButton()
         button.setTitle(title, for: .normal)
