@@ -1,10 +1,3 @@
-//
-//  ViewController.swift
-//  korolevHW2
-//
-//  Created by Yeva on 07.10.2022.
-//
-
 import UIKit
 
 class ViewController: UIViewController {
@@ -61,6 +54,8 @@ class ViewController: UIViewController {
         colorPaletteView.isHidden = true
         view.addSubview(colorPaletteView)
         colorPaletteView.translatesAutoresizingMaskIntoConstraints = false
+        colorPaletteView.layer.shadowRadius = 10
+        colorPaletteView.layer.shadowOpacity = 0.5
         colorPaletteView.addTarget(self, action: #selector(changeColor(_:)), for: .touchDragInside)
         NSLayoutConstraint.activate(
             [colorPaletteView.topAnchor.constraint(equalTo: incrementButton.bottomAnchor,constant: 8),
@@ -85,6 +80,7 @@ class ViewController: UIViewController {
         incrementButton.layer.shadowRadius = 10
         incrementButton.layer.shadowOpacity = 0.5
         incrementButton.addTarget(self, action: #selector(incrementButtonPressed), for: .touchUpInside)
+        incrementButton.addTarget(self, action: #selector(change), for: .touchUpInside)
     }
     @objc
     private func incrementButtonPressed(){
@@ -160,5 +156,10 @@ class ViewController: UIViewController {
         UIView.animate(withDuration: 0.5){
             self.view.backgroundColor = slider.chosenColor
         }
+    }
+    @objc
+    private func change(){
+        self.view.backgroundColor = .white;
+        colorPaletteView.change(color: self.view.backgroundColor!)
     }
 }

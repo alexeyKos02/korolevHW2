@@ -2,20 +2,38 @@ import UIKit
 final class ColorPalletteView: UIControl{
     private let stackView = UIStackView()
     private(set) var chosenColor: UIColor = .systemGray6
-    
+    var redControl = ColorSliderView(colorName: "R", value: Float(0))
+    var greenControl = ColorSliderView(colorName: "G", value: Float(0))
+    var blueControl = ColorSliderView(colorName: "B", value: Float(0))
     init(){
         super.init(frame: .zero)
         setupView()
     }
-    
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    public func change(color: UIColor){
+        redControl = ColorSliderView(colorName: "R", value: Float(color.rgba.red))
+        greenControl = ColorSliderView(colorName: "G", value: Float(color.rgba.green))
+        blueControl = ColorSliderView(colorName: "B", value: Float(color.rgba.blue))
+        redControl.tag = 0
+        greenControl.tag = 1
+        blueControl.tag = 2
+        stackView.removeFullyAllArrangedSubviews()
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        stackView.addArrangedSubview(redControl)
+        stackView.addArrangedSubview(greenControl)
+        stackView.addArrangedSubview(blueControl)
+        [redControl,greenControl,blueControl].forEach{
+            $0.addTarget(self, action: #selector(sliderMoved(slider:)), for: .touchDragInside)
+        }
+    }
     private func setupView(){
-        let redControl = ColorSliderView(colorName: "R", value: Float(chosenColor.rgba.red))
-        let greenControl = ColorSliderView(colorName: "G", value: Float(chosenColor.rgba.green))
-        let blueControl = ColorSliderView(colorName: "B", value: Float(chosenColor.rgba.blue))
+        redControl = ColorSliderView(colorName: "R", value: Float(chosenColor.rgba.red))
+        greenControl = ColorSliderView(colorName: "G", value: Float(chosenColor.rgba.green))
+        blueControl = ColorSliderView(colorName: "B", value: Float(chosenColor.rgba.blue))
         redControl.tag = 0
         greenControl.tag = 1
         blueControl.tag = 2
@@ -61,6 +79,9 @@ final class ColorPalletteView: UIControl{
         sendActions(for: .touchDragInside)
     }
 }
+
+//MARK: -extencions
+
 extension UIColor {
     var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         var red: CGFloat = 0
@@ -70,6 +91,20 @@ extension UIColor {
         getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         return (red, green, blue, alpha)
     }
+}
+extension UIStackView {
+    
+    func removeFully(view: UIView) {
+        removeArrangedSubview(view)
+        view.removeFromSuperview()
+    }
+    
+    func removeFullyAllArrangedSubviews() {
+        arrangedSubviews.forEach { (view) in
+            removeFully(view: view)
+        }
+    }
+    
 }
 
 extension ColorPalletteView{
