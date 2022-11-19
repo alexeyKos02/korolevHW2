@@ -59,6 +59,8 @@ final class AddNoteCell: UITableViewCell{
         let short = ShortNote(text: textView.text)
         delegate?.newNoteAdded(note: short)
         textView.text = ""
+        addButton.alpha = 0.5
+        addButton.isEnabled = false
     }
 }
 // Расширение класса для делегата UITextView. Реакция кнопки на текстовую область.
