@@ -6,6 +6,7 @@ class ViewController: UIViewController {
     let commentLabel = UILabel()
     var buttonsSV = UIStackView()
     let colorPaletteView = ColorPalletteView()
+    let notesViewController = NotesViewController()
     var value:Int = 0
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,11 +19,14 @@ class ViewController: UIViewController {
         let colorsButton = makeMenuButton(title: "🎨")
         colorsButton.addTarget(self, action: #selector(paletteButtonPressed), for: .touchUpInside)
         let notesButton = makeMenuButton(title: "📝")
+        notesButton.addTarget(self, action: #selector(ChangeController), for: .touchUpInside)
         let newsButton = makeMenuButton(title: "📰")
         buttonsSV = UIStackView(arrangedSubviews: [colorsButton,notesButton,newsButton])
         buttonsSV.spacing = 12
         buttonsSV.axis = .horizontal
         buttonsSV.distribution = .fillEqually
+        buttonsSV.layer.shadowRadius = 10
+        buttonsSV.layer.shadowOpacity = 0.5
         self.view.addSubview(buttonsSV)
         buttonsSV.pin(to: self.view, [.left, .right], [24, 24])
         buttonsSV.pinButton(to: self.view.safeAreaLayoutGuide.bottomAnchor, 24)
@@ -35,6 +39,7 @@ class ViewController: UIViewController {
         setupMenuButtons()
         setupColorControlSV()
     }
+    
     private func setupCommentView()-> UIView{
         let CommentView = UIView()
         CommentView.backgroundColor = .white
@@ -50,6 +55,7 @@ class ViewController: UIViewController {
         commentLabel.pin(to: CommentView, [.top, .left, .bottom, .right], [16,16,16,16])
         return CommentView
     }
+    
     private func setupColorControlSV(){
         colorPaletteView.isHidden = true
         view.addSubview(colorPaletteView)
@@ -66,7 +72,6 @@ class ViewController: UIViewController {
         )
     }
     
-    // MARK: -FuncButton
     private func setupIncrementButton(){
         incrementButton.setTitle("Increment", for: .normal)
         incrementButton.setTitleColor(.black, for: .normal)
@@ -82,6 +87,7 @@ class ViewController: UIViewController {
         incrementButton.addTarget(self, action: #selector(incrementButtonPressed), for: .touchUpInside)
         incrementButton.addTarget(self, action: #selector(change), for: .touchUpInside)
     }
+    // MARK: -FuncButton
     @objc
     private func incrementButtonPressed(){
         value+=1
@@ -161,5 +167,17 @@ class ViewController: UIViewController {
     private func change(){
         self.view.backgroundColor = .white;
         colorPaletteView.change(color: self.view.backgroundColor!)
+    }
+    // MARK: -funcNotes
+    @objc
+    private func ChangeController(){
+        notesViewController.delegate = self
+        self.present(UINavigationController(rootViewController: notesViewController), animated: true, completion: nil)
+    }
+}
+extension ViewController: DismissNotesViewController{
+    func dismissViewController() {
+        UINavigationController(rootViewController: notesViewController).popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
     }
 }

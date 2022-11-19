@@ -1,4 +1,5 @@
 import UIKit
+
 final class ColorPalletteView: UIControl{
     private let stackView = UIStackView()
     private(set) var chosenColor: UIColor = .systemGray6
