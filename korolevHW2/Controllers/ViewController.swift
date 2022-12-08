@@ -21,6 +21,7 @@ class ViewController: UIViewController {
         let notesButton = makeMenuButton(title: "📝")
         notesButton.addTarget(self, action: #selector(ChangeController), for: .touchUpInside)
         let newsButton = makeMenuButton(title: "📰")
+        newsButton.addTarget(self, action: #selector(newsButtonPressed), for: .touchUpInside)
         buttonsSV = UIStackView(arrangedSubviews: [colorsButton,notesButton,newsButton])
         buttonsSV.spacing = 12
         buttonsSV.axis = .horizontal
@@ -171,7 +172,7 @@ class ViewController: UIViewController {
     // MARK: -funcNotes
     @objc
     private func ChangeController(){
-        notesViewController.delegate = self
+        notesViewController.delegate = self       
         self.present(UINavigationController(rootViewController: notesViewController), animated: true, completion: nil)
     }
 }
@@ -179,5 +180,11 @@ extension ViewController: DismissNotesViewController{
     func dismissViewController() {
         UINavigationController(rootViewController: notesViewController).popViewController(animated: true)
         dismiss(animated: true, completion: nil)
+    }
+    // MARK: -funcNews
+    @objc
+    private func newsButtonPressed() {
+        let newsListController = NewsListViewController()
+        navigationController?.pushViewController(newsListController, animated: true)
     }
 }
